@@ -45,4 +45,4 @@ if __name__ == '__main__':
     tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
     tokens, segments, input_masks = get_tokens(texts, tokenizer)
     out_text = model_text(tokens, segments, input_masks)
-    print(out_text.shape)
+    print(out_text.shape) # torch.Size([2, 32])
