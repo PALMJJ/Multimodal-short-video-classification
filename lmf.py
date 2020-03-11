@@ -54,4 +54,4 @@ if __name__ == '__main__':
     tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
     lmf = LMF(output_dim=32, rank=4, use_softmax=False)
     output = lmf(images, texts, tokenizer)
-    print(output.shape)
+    print(output.shape) # torch.Size([1, 32])
