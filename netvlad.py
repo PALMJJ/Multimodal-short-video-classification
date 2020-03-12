@@ -12,6 +12,7 @@ class NetVLAD(nn.Module):
         self.normalize_input = normalize_input
         self.conv = nn.Conv2d(dim, num_clusters, kernel_size=(1, 1), bias=True)
         self.centroids = nn.Parameter(torch.rand(num_clusters, dim))
+        self.fc = nn.Linear(98304, 1024)
         self._init_params()
 
     def _init_params(self):
@@ -31,6 +32,7 @@ class NetVLAD(nn.Module):
         vlad = F.normalize(vlad, p=2, dim=2)
         vlad = vlad.view(x.size(0), -1)
         vlad = F.normalize(vlad, p=2, dim=1)
+        vlad = self.fc(vlad)
         return vlad
 
 if __name__ == '__main__':
@@ -44,4 +46,4 @@ if __name__ == '__main__':
     model2 = NetVLAD()
     out = model1(x)
     out = model2(out)
-    print(out.shape) # torch.Size([1, 98304])
+    print(out.shape) # torch.Size([1, 1024])
