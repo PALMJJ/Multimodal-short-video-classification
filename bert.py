@@ -24,7 +24,7 @@ def get_tokens(texts, tokenizer):
     return tokens.to(device), segments.to(device), input_masks.to(device)
 
 class TextNet(nn.Module):
-    def __init__(self,  code_length=32):
+    def __init__(self,  code_length=1024):
         super(TextNet, self).__init__()
         modelConfig = BertConfig.from_pretrained('/home/hengyuli/cross-modal/bert_config.json')
         self.textExtractor = BertModel.from_pretrained('/home/hengyuli/cross-modal/pytorch_model.bin', config=modelConfig)
@@ -40,9 +40,9 @@ class TextNet(nn.Module):
         return hash_features
 
 if __name__ == '__main__':
-    model_text = TextNet(code_length=32)
+    model_text = TextNet(code_length=1024)
     texts = ['[CLS] 你是谁? [SEP]', '[CLS] 你是好人. [SEP]']
     tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
     tokens, segments, input_masks = get_tokens(texts, tokenizer)
     out_text = model_text(tokens, segments, input_masks)
-    print(out_text.shape) # torch.Size([2, 32])
+    print(out_text.shape) # torch.Size([2, 1024])
