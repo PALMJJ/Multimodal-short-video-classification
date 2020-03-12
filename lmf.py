@@ -11,7 +11,7 @@ from pytorch_transformers import BertModel, BertConfig, BertTokenizer
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class LMF(nn.Module):
-    def __init__(self, output_dim, rank, hidden_dims=1024, use_softmax=False):
+    def __init__(self, output_dim=1024, rank=4, hidden_dims=1024, use_softmax=False):
         super(LMF, self).__init__()
         self.output_dim = output_dim
         self.rank = rank
