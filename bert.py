@@ -26,8 +26,8 @@ def get_tokens(texts, tokenizer):
 class TextNet(nn.Module):
     def __init__(self,  code_length=1024):
         super(TextNet, self).__init__()
-        modelConfig = BertConfig.from_pretrained('/home/hengyuli/cross-modal/bert_config.json')
-        self.textExtractor = BertModel.from_pretrained('/home/hengyuli/cross-modal/pytorch_model.bin', config=modelConfig)
+        modelConfig = BertConfig.from_pretrained('/home/hengyuli/cross-modal/model/bert_config.json')
+        self.textExtractor = BertModel.from_pretrained('/home/hengyuli/cross-modal/model/pytorch_model.bin', config=modelConfig)
         embedding_dim = self.textExtractor.config.hidden_size
         self.fc = nn.Linear(embedding_dim, code_length)
         self.tanh = torch.nn.Tanh()
