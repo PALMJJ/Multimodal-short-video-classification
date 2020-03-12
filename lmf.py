@@ -11,7 +11,7 @@ from pytorch_transformers import BertModel, BertConfig, BertTokenizer
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class LMF(nn.Module):
-    def __init__(self, output_dim, rank, hidden_dims=32, use_softmax=False):
+    def __init__(self, output_dim, rank, hidden_dims=1024, use_softmax=False):
         super(LMF, self).__init__()
         self.output_dim = output_dim
         self.rank = rank
@@ -21,8 +21,8 @@ class LMF(nn.Module):
         self.netvlad = NetVLAD()
         self.textnet = TextNet()
 
-        self.image_factor = Parameter(torch.Tensor(self.rank, self.hidden_dims, self.output_dim).to(device))
-        self.text_factor = Parameter(torch.Tensor(self.rank, self.hidden_dims, self.output_dim).to(device))
+        self.image_factor = Parameter(torch.Tensor(self.rank, self.output_dim, self.hidden_dims).to(device))
+        self.text_factor = Parameter(torch.Tensor(self.rank, self.output_dim, self.hidden_dims).to(device))
         self.fusion_weights = Parameter(torch.Tensor(1, self.rank).to(device))
         self.fusion_bias = Parameter(torch.Tensor(1, self.output_dim).to(device))
 
@@ -52,6 +52,6 @@ if __name__ == '__main__':
     images = torch.randn(1, 3, 299, 299)
     texts = ['[CLS] 你好吗? [SEP]']
     tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
-    lmf = LMF(output_dim=32, rank=4, use_softmax=False)
+    lmf = LMF(output_dim=1024, rank=4, use_softmax=False)
     output = lmf(images, texts, tokenizer)
-    print(output.shape) # torch.Size([1, 32])
+    print(output.shape) # torch.Size([1, 1024])
